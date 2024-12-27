@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<style>
+    .size{
+        width: 30vb;
+        height: 40vh;
+    }
+    .header{
+        background-image: url('./XwPSFz.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .container{
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 60px;
+    }
+    .var{
+        color: gold;
+        font-family: "Bebas Neue", serif;
+  font-weight: 400;
+  font-style: normal;
+        width: 20vb;
+    }
+    span{
+        color:gold;
+        font-family: "Afacad Flux", serif;
+  font-optical-sizing: auto;
+  font-weight: 30px;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0;
+    }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header bg-dark d-flex align-items-center" style="min-height: 100vh;">
+        <div class="container md bg-light shadow w-75 text-center p-5 rounded">
+            <h1 class="text-dark fw-5"><span class="var">Movie Checker</span></h1><br>
+            <div class="d-flex justify-content-center"> <label for="movie"><h3><span>Movie Name: </span></h3></label>
+                <input type="text" id="movie" class="form-control w-50 fs-5 ms-5 d-flex justify-content-end"></div>
+           <button class="btn btn-secondary w-25 mt-5" onclick="find()">Get Details</button>
+          
+           <div class="row mt-5">
+            <div class="col-md-4"id="result1">
+            </div>
+            <div class="col-md-8  mt-5 w-50" id="result2">
+                      
+        </div>
+           </div>
+        </div>
+       
+    </div>
+</body>
+<script>
+    const find= async()=>{
+        console.log(movie.value);
+        if(movie.value)
+    {
+        const response= await fetch(`http://api.themoviedb.org/3/search/movie?api_key=6c3f8a211d76cbb96d3cff36f03e2f62&query=${movie.value}}`)
+        console.log(response);
+        if(response.status==200)
+    {
+        const responsetext=await response.json()
+        console.log(responsetext);
+        const movieDetails=responsetext.results[0]
+        console.log(movieDetails);
+        const val="/10"
+        result2.innerHTML=`
+        <ul class="list-group">
+                    <li class="list-group-item">Release Date : ${movieDetails.release_date}</li>
+                    <li class="list-group-item">Language : ${movieDetails.original_language}</li>
+                    <li class="list-group-item">Popularity :${movieDetails.popularity}</li>
+                    <li class="list-group-item">Rating : ${movieDetails.vote_average}${val}</li>
+                    <li class="list-group-item">Overview :${movieDetails.overview}</li>
+                        </li>
+                </ul>        
+        `
+        result1.innerHTML = movieDetails.poster_path
+                        ? `<img src="https://image.tmdb.org/t/p/w500${movieDetails.poster_path}" class="size m-5" alt="Movie Poster">`
+                        : `<p class="text-danger">Poster not available</p>`;
+        
+    }else{
+        alert(`unable to fetch the code ${response.status}`);
+        
+    }
+    }else{
+        alert("enter a movie name"); 
+    }
+    }
+</script>
+</html>
